@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import WelcomeMessage from './components/WelcomeMessage';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
+import Counter from './components/Counter'; // <-- Added here
 import './App.css';
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
       <Header />
       <MainContent />
       <WelcomeMessage />
+
+      {/* Added Counter component */}
+      <Counter />
+
       <Footer />
 
       {/* Original Vite + React content */}
