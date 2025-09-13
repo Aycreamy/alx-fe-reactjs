@@ -1,11 +1,11 @@
 // src/App.jsx
 import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { useRecipeStore } from './components/recipeStore';
-
-
-// ✅ Explicit imports (checker looks for these!)
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeList from './components/RecipeList';
+import RecipeDetails from './components/RecipeDetails';
+import EditRecipeForm from './components/EditRecipeForm';
 
 export default function App() {
   const setRecipes = useRecipeStore((s) => s.setRecipes);
@@ -40,16 +40,38 @@ export default function App() {
   }, [recipes]);
 
   return (
-    <div className="app-container">
-      <header>
-        <h1>Recipe Sharing App</h1>
-      </header>
+    <BrowserRouter>
+      <div className="app-container">
+        <header>
+          <h1>
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Recipe Sharing App
+            </Link>
+          </h1>
+          <nav>
+            <Link to="/">Home</Link>
+            {' • '}
+            <Link to="/">All recipes</Link>
+          </nav>
+        </header>
 
-      <main>
-        <AddRecipeForm />
-        <hr />
-        <RecipeList />
-      </main>
-    </div>
+        <main>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <AddRecipeForm />
+                  <hr />
+                  <RecipeList />
+                </>
+              }
+            />
+            <Route path="/recipes/:id" element={<RecipeDetails />} />
+            <Route path="/edit/:id" element={<EditRecipeForm />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   );
 }
