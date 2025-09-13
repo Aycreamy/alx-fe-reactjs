@@ -1,6 +1,7 @@
 // src/App.jsx
 import React, { useEffect } from 'react';
-import { useRecipeStore } from './stores/recipeStore';
+import { useRecipeStore } from './components/recipeStore';
+
 
 // ✅ Explicit imports (checker looks for these!)
 import AddRecipeForm from './components/AddRecipeForm';
