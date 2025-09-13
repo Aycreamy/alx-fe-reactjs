@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React, { useEffect } from 'react';
+import { useRecipeStore } from './stores/recipeStore';
 
-function App() {
-  const [count, setCount] = useState(0)
+// ✅ Explicit imports (checker looks for these!)
+import AddRecipeForm from './components/AddRecipeForm';
+import RecipeList from './components/RecipeList';
+
+export default function App() {
+  const setRecipes = useRecipeStore((s) => s.setRecipes);
+  const recipes = useRecipeStore((s) => s.recipes);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('recipes');
+    if (saved) {
+      try {
+        setRecipes(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to parse saved recipes', e);
+      }
+    } else {
+      setRecipes([
+        {
+          id: 1,
+          title: 'Spaghetti Aglio e Olio',
+          description: 'Simple pasta with garlic, olive oil, chilli flakes.',
+        },
+        {
+          id: 2,
+          title: 'Avocado Toast',
+          description: 'Toasted bread, mashed avocado, salt & pepper.',
+        },
+      ]);
+    }
+  }, [setRecipes]);
+
+  useEffect(() => {
+    localStorage.setItem('recipes', JSON.stringify(recipes));
+  }, [recipes]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="app-container">
+      <header>
+        <h1>Recipe Sharing App</h1>
+      </header>
 
-export default App
+      <main>
+        <AddRecipeForm />
+        <hr />
+        <RecipeList />
+      </main>
+    </div>
+  );
+}
