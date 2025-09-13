@@ -1,29 +1,23 @@
 // src/components/RecipeList.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useRecipeStore } from './recipeStore';
-import DeleteRecipeButton from './DeleteRecipeButton';
+import { Link } from 'react-router-dom';
 
 const RecipeList = () => {
-  const recipes = useRecipeStore((state) => state.recipes);
+  const recipes = useRecipeStore((state) => state.filteredRecipes);
 
-  if (!recipes.length) return <p>No recipes yet — add one!</p>;
+  if (!recipes.length) {
+    return <p>No recipes found.</p>;
+  }
 
   return (
-    <div className="recipe-list">
+    <div>
       {recipes.map((recipe) => (
-        <article className="recipe-card" key={recipe.id}>
-          <h3>
-            <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
-          </h3>
+        <div key={recipe.id}>
+          <h3>{recipe.title}</h3>
           <p>{recipe.description}</p>
-          <div style={{ marginTop: 8 }}>
-            <Link to={`/edit/${recipe.id}`} style={{ marginRight: 8 }}>
-              Edit
-            </Link>
-            <DeleteRecipeButton recipeId={recipe.id} />
-          </div>
-        </article>
+          <Link to={`/recipes/${recipe.id}`}>View Details</Link>
+        </div>
       ))}
     </div>
   );
