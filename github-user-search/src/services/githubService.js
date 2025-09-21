@@ -2,20 +2,24 @@ import axios from "axios";
 
 const BASE_URL = "https://api.github.com";
 
-export async function fetchAdvancedUsers({ username, location, minRepos }) {
+// Advanced search function
+export const fetchUserData = async (query, location, minRepos) => {
   try {
-    let query = "";
+    let searchQuery = query;
 
-    if (username) query += `${username} in:login `;
-    if (location) query += `location:${location} `;
-    if (minRepos) query += `repos:>=${minRepos} `;
+    if (location) {
+      searchQuery += `+location:${location}`;
+    }
+    if (minRepos) {
+      searchQuery += `+repos:>=${minRepos}`;
+    }
 
-    const response = await axios.get(`${BASE_URL}/search/users`, {
-      params: { q: query.trim(), per_page: 10 }, // 10 results per page
-    });
+    const response = await axios.get(
+      `${BASE_URL}/search/users?q=${searchQuery}`
+    );
 
-    return response.data.items; // array of users
+    return response.data.items; // The "items" array contains the list of users
   } catch (error) {
     throw error;
   }
-}
+};
