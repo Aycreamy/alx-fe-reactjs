@@ -1,10 +1,9 @@
 import Search from "./components/Search";
-import './App.css';
 
 export default function App() {
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "1rem" }}>
-      <h1>GitHub User Search</h1>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">GitHub User Search</h1>
       <Search />
     </div>
   );
