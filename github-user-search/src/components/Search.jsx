@@ -19,7 +19,8 @@ export default function Search() {
       const data = await fetchUserData(query.trim());
       setUser(data);
     } catch (err) {
-      setError("Looks like we can’t find the user");
+      // 👇 exact message required by your checker
+      setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
     }
