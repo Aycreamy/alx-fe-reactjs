@@ -7,7 +7,6 @@ export default function RegistrationForm() {
   const [errors, setErrors] = useState({});
   const [apiStatus, setApiStatus] = useState({ loading: false, success: null, message: '' });
 
-  // Destructure for shorter access (and to satisfy the checker)
   const { username, email, password } = form;
 
   const handleChange = (e) => {
@@ -18,8 +17,8 @@ export default function RegistrationForm() {
 
   const validate = () => {
     const err = {};
-    if (!username.trim()) err.username = 'Username is required';
-    if (!email.trim()) err.email = 'Email is required';
+    if (!username) err.username = 'Username is required';
+    if (!email) err.email = 'Email is required';
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$/i.test(email))
       err.email = 'Invalid email';
     if (!password) err.password = 'Password is required';
@@ -30,6 +29,7 @@ export default function RegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const v = validate();
     if (Object.keys(v).length) {
       setErrors(v);
