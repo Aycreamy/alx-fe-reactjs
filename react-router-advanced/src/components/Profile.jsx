@@ -1,6 +1,6 @@
 // src/components/Profile.jsx
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Routes, Route } from 'react-router-dom';
 import ProfileDetails from './ProfileDetails';
 import ProfileSettings from './ProfileSettings';
 
@@ -9,20 +9,17 @@ export default function Profile() {
     <div>
       <h2>User Profile</h2>
 
-      {/* Navigation links for nested routes */}
+      {/* Sub-navigation */}
       <nav>
         <Link to="details" style={{ marginRight: 10 }}>Details</Link>
         <Link to="settings">Settings</Link>
       </nav>
 
-      {/* Render nested routes */}
-      <Outlet />
-
-      {/* 👇 Explicitly include these for the checker */}
-      <div style={{ display: 'none' }}>
-        <ProfileDetails />
-        <ProfileSettings />
-      </div>
+      {/* Nested Routes inside Profile */}
+      <Routes>
+        <Route path="details" element={<ProfileDetails />} />
+        <Route path="settings" element={<ProfileSettings />} />
+      </Routes>
     </div>
   );
 }
