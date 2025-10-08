@@ -7,6 +7,15 @@ export default function TodoList() {
   ]);
   const [newTodo, setNewTodo] = useState('');
 
+  <input
+  type="text"
+  placeholder="Add a todo"
+  value={newTodo}
+  onChange={(e) => setNewTodo(e.target.value)}
+  aria-label="todo-input"
+/>
+
+
   const addTodo = (e) => {
     e.preventDefault();
     if (!newTodo.trim()) return;
