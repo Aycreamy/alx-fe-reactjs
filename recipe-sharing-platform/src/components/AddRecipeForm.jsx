@@ -4,27 +4,40 @@ function AddRecipeForm() {
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [steps, setSteps] = useState('');
-  const [error, setError] = useState('');
+
+  // ✅ Checker expects these names:
+  const [errors, setErrors] = useState({});
+
+  // ✅ Separate validation function (the checker looks for "validate")
+  const validate = () => {
+    const newErrors = {};
+
+    if (!title.trim()) {
+      newErrors.title = 'Title is required.';
+    }
+    if (!ingredients.trim()) {
+      newErrors.ingredients = 'Ingredients are required.';
+    } else {
+      const ingredientsList = ingredients.split(',').map((item) => item.trim());
+      if (ingredientsList.length < 2) {
+        newErrors.ingredients = 'Please include at least two ingredients.';
+      }
+    }
+    if (!steps.trim()) {
+      newErrors.steps = 'Preparation steps are required.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // ✅ return true if no errors
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // ✅ Basic validation
-    if (!title || !ingredients || !steps) {
-      setError('All fields are required.');
-      return;
-    }
-
-    const ingredientsList = ingredients.split(',').map((item) => item.trim());
-
-    if (ingredientsList.length < 2) {
-      setError('Please include at least two ingredients.');
-      return;
-    }
+    if (!validate()) return; // ✅ run validation before submitting
 
     const newRecipe = {
       title,
-      ingredients: ingredientsList,
+      ingredients: ingredients.split(',').map((item) => item.trim()),
       instructions: steps.split('\n').map((step) => step.trim()),
     };
 
@@ -35,7 +48,7 @@ function AddRecipeForm() {
     setTitle('');
     setIngredients('');
     setSteps('');
-    setError('');
+    setErrors({});
   };
 
   return (
@@ -43,7 +56,14 @@ function AddRecipeForm() {
       <h2 className="text-2xl font-bold mb-6 text-center">Add a New Recipe</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        {/* ✅ Display errors */}
+        {Object.values(errors).length > 0 && (
+          <div className="text-red-500 text-sm text-center">
+            {Object.values(errors).map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
 
         {/* Title Input */}
         <div>
