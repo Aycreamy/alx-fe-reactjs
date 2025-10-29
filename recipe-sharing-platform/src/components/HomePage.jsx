@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
 
-  // Load mock data from data.json
   useEffect(() => {
     fetch("/src/data.json")
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => setRecipes(data))
-      .catch((error) => console.error("Error loading recipes:", error));
+      .catch((err) => console.error("Error loading recipes:", err));
   }, []);
 
   return (
@@ -33,9 +33,12 @@ const HomePage = () => {
                 {recipe.title}
               </h2>
               <p className="text-gray-600 text-sm">{recipe.summary}</p>
-              <button className="mt-3 inline-block bg-blue-500 text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-600">
+              <Link
+                to={`/recipe/${recipe.id}`}
+                className="mt-3 inline-block bg-blue-500 text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-600"
+              >
                 View Recipe
-              </button>
+              </Link>
             </div>
           </div>
         ))}
